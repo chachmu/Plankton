@@ -159,7 +159,7 @@
       </ray>
       <plugin name="sonar${suffix}_controller" filename="libgazebo_ros_ray_sensor.so">
         <ros>
-	  <remapping>~\out:${topic}</remapping>
+	  <remapping>~/out:${topic}</remapping>
 	</ros>
         <frameName>sonar${suffix}_link</frameName>
       </plugin>
