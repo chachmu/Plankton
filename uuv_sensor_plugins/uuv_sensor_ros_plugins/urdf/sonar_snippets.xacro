@@ -84,12 +84,12 @@
     </xacro:multibeam_sonar>
   </xacro:macro>
 
-  <xacro:macro name="forward_multibeam_p900" params="namespace parent_link *origin">
+  <xacro:macro name="forward_multibeam_p900" params="namespace parent_link topic *origin">
     <xacro:multibeam_sonar
       namespace="${namespace}"
       suffix=""
       parent_link="${parent_link}"
-      topic="sonar"
+      topic="${topic}"
       mass="0.02"
       update_rate="15"
       samples="512"
@@ -124,7 +124,7 @@
       <xacro:no_collision/>
     </link>
 
-  <joint name="${namespace}_sonar${suffix}_joint" type="revolute">
+  <joint name="${namespace}_sonar${suffix}_joint" type="fixed">
     <xacro:insert_block name="origin" />
     <parent link="${parent_link}" />
     <child link="${namespace}/sonar${suffix}_link" />
@@ -133,7 +133,7 @@
   </joint>
 
   <gazebo reference="${namespace}/sonar${suffix}_link">
-    <sensor type="gpu_ray" name="sonar${suffix}">
+    <sensor type="ray" name="sonar${suffix}">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
       <update_rate>${update_rate}</update_rate>
@@ -157,8 +157,10 @@
           <stddev>${range_stddev}</stddev>
         </noise>
       </ray>
-      <plugin name="sonar${suffix}_controller" filename="libgazebo_ros_gpu_laser.so">
-        <topicName>${topic}</topicName>
+      <plugin name="sonar${suffix}_controller" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+	  <remapping>~\out:${topic}</remapping>
+	</ros>
         <frameName>sonar${suffix}_link</frameName>
       </plugin>
       <!-- TODO: Separate switchable sonar version in another macro -->
