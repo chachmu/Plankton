@@ -124,7 +124,7 @@
       <xacro:no_collision/>
     </link>
 
-  <joint name="${namespace}_sonar${suffix}_joint" type="fixed">
+  <joint name="${namespace}_sonar${suffix}_joint" type="revolute">
     <xacro:insert_block name="origin" />
     <parent link="${parent_link}" />
     <child link="${namespace}/sonar${suffix}_link" />
